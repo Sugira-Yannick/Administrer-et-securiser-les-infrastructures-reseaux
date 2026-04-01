@@ -1,0 +1,562 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Module Académique | Infrastructures Réseaux Sécurisées — De la Conception à l'Opération</title>
+    <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=Source+Sans+3:ital,wght@0,400;0,600;0,700;1,400&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --primary: #1a5f7a;
+            --secondary: #2c3e66;
+            --accent: #e67e22;
+            --law: #2c6e2c;
+            --illusion: #b91c1c;
+            --concept: #8a2be2;
+            --background: #fefefe;
+            --surface: #ffffff;
+            --border: #e2e8f0;
+            --text: #1a202c;
+            --text-light: #4a5568;
+            --code-bg: #f7fafc;
+        }
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        body {
+            font-family: 'Source Sans 3', 'Inter', sans-serif;
+            background: var(--background);
+            color: var(--text);
+            line-height: 1.6;
+        }
+        .page-header {
+            background: linear-gradient(135deg, var(--primary) 0%, var(--secondary) 100%);
+            color: white;
+            padding: 4rem 2rem;
+            text-align: center;
+        }
+        .page-header h1 {
+            font-family: 'Space Grotesk', sans-serif;
+            font-size: 2.5rem;
+            font-weight: 700;
+            margin-bottom: 1rem;
+        }
+        .page-header .subtitle {
+            font-size: 1.2rem;
+            opacity: 0.9;
+            max-width: 800px;
+            margin: 0 auto;
+        }
+        #main-nav {
+            background: var(--surface);
+            border-bottom: 1px solid var(--border);
+            position: sticky;
+            top: 0;
+            z-index: 100;
+            padding: 0.75rem 2rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+        }
+        .nav-logo {
+            font-family: 'Space Grotesk', sans-serif;
+            font-weight: 700;
+            font-size: 1.2rem;
+            color: var(--primary);
+        }
+        .nav-links {
+            display: flex;
+            gap: 1.5rem;
+            list-style: none;
+        }
+        .nav-links a {
+            text-decoration: none;
+            color: var(--text);
+            font-weight: 500;
+            transition: color 0.2s;
+        }
+        .nav-links a:hover {
+            color: var(--accent);
+        }
+        .menu-toggle {
+            display: none;
+            background: none;
+            border: none;
+            font-size: 1.5rem;
+            cursor: pointer;
+            color: var(--primary);
+        }
+        .main-wrapper {
+            display: flex;
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 2rem;
+            gap: 2rem;
+        }
+        #sidebar {
+            width: 280px;
+            flex-shrink: 0;
+            background: var(--surface);
+            border-radius: 1rem;
+            border: 1px solid var(--border);
+            padding: 1.5rem;
+            position: sticky;
+            top: 80px;
+            height: fit-content;
+        }
+        .sidebar-title {
+            font-family: 'Space Grotesk', sans-serif;
+            font-size: 1.1rem;
+            font-weight: 600;
+            margin-bottom: 1rem;
+            padding-bottom: 0.5rem;
+            border-bottom: 2px solid var(--accent);
+            display: inline-block;
+        }
+        .sidebar-nav {
+            display: flex;
+            flex-direction: column;
+            gap: 0.5rem;
+        }
+        .sidebar-nav a {
+            text-decoration: none;
+            color: var(--text-light);
+            font-size: 0.9rem;
+            transition: color 0.2s;
+            padding: 0.25rem 0;
+        }
+        .sidebar-nav a:hover {
+            color: var(--accent);
+        }
+        .sidebar-nav .sub {
+            padding-left: 1rem;
+            font-size: 0.85rem;
+        }
+        #content {
+            flex: 1;
+            min-width: 0;
+        }
+        .module-section {
+            background: var(--surface);
+            border-radius: 1rem;
+            border: 1px solid var(--border);
+            margin-bottom: 2rem;
+            overflow: hidden;
+        }
+        .section-header {
+            background: var(--code-bg);
+            padding: 1rem 1.5rem;
+            border-bottom: 1px solid var(--border);
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+        }
+        .section-tag {
+            font-size: 0.7rem;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            background: var(--accent);
+            color: white;
+            padding: 0.2rem 0.6rem;
+            border-radius: 20px;
+        }
+        .section-header h2 {
+            font-family: 'Space Grotesk', sans-serif;
+            font-size: 1.5rem;
+            font-weight: 600;
+            margin: 0;
+        }
+        .module-section > *:not(.section-header) {
+            padding: 1.5rem;
+        }
+        .analogy-box, .concept-key, .law-box, .illusion-box, .equation-box, .warning-box {
+            margin: 1.5rem 0;
+            padding: 1.25rem;
+            border-radius: 0.75rem;
+            border-left: 4px solid;
+        }
+        .analogy-box {
+            background: #f0f9ff;
+            border-left-color: var(--primary);
+        }
+        .concept-key {
+            background: #f5f0ff;
+            border-left-color: var(--concept);
+        }
+        .law-box {
+            background: #e8f5e9;
+            border-left-color: var(--law);
+        }
+        .illusion-box {
+            background: #ffe5e5;
+            border-left-color: var(--illusion);
+        }
+        .equation-box {
+            background: #fff8e7;
+            border-left-color: var(--accent);
+            font-family: monospace;
+            font-size: 1rem;
+            text-align: center;
+        }
+        .warning-box {
+            background: #fff3e0;
+            border-left-color: #e67e22;
+            border-left-width: 4px;
+        }
+        pre, code {
+            background: var(--code-bg);
+            padding: 0.2rem 0.4rem;
+            border-radius: 0.25rem;
+            font-family: monospace;
+            font-size: 0.9rem;
+        }
+        pre {
+            padding: 1rem;
+            overflow-x: auto;
+            margin: 1rem 0;
+        }
+        .mermaid-diagram {
+            background: var(--code-bg);
+            padding: 1rem;
+            border-radius: 0.75rem;
+            margin: 1.5rem 0;
+            text-align: center;
+        }
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 1.5rem 0;
+            font-size: 0.9rem;
+        }
+        th, td {
+            border: 1px solid var(--border);
+            padding: 0.75rem;
+            text-align: left;
+            vertical-align: top;
+        }
+        th {
+            background: var(--code-bg);
+            font-weight: 600;
+        }
+        @media (max-width: 768px) {
+            .main-wrapper {
+                flex-direction: column;
+                padding: 1rem;
+            }
+            #sidebar {
+                width: 100%;
+                position: static;
+            }
+            .nav-links {
+                display: none;
+                width: 100%;
+                flex-direction: column;
+                gap: 0.5rem;
+                margin-top: 1rem;
+            }
+            .nav-links.show {
+                display: flex;
+            }
+            .menu-toggle {
+                display: block;
+            }
+            .page-header h1 {
+                font-size: 1.8rem;
+            }
+        }
+        @media print {
+            #main-nav, #sidebar, .menu-toggle {
+                display: none;
+            }
+            .main-wrapper {
+                padding: 0;
+            }
+            .module-section {
+                break-inside: avoid;
+            }
+        }
+    </style>
+    <script src="https://cdn.jsdelivr.net/npm/mermaid@10/dist/mermaid.min.js"></script>
+</head>
+<body>
+    <header class="page-header">
+        <h1>Infrastructures Réseaux Sécurisées</h1>
+        <p class="subtitle">De la conception à l'opération — Architecture, filtrage, VPN et résilience</p>
+    </header>
+
+    <nav id="main-nav">
+        <div class="nav-logo">SÉCURITÉ RÉSEAU</div>
+        <button class="menu-toggle" aria-label="Menu">☰</button>
+        <ul class="nav-links">
+            <li><a href="#analogie">Analogie</a></li>
+            <li><a href="#modele-mental">Modèle mental</a></li>
+            <li><a href="#architecture">Architecture</a></li>
+            <li><a href="#mecanismes">Mécanismes</a></li>
+            <li><a href="#protocoles">Protocoles</a></li>
+            <li><a href="#illusions">Illusions</a></li>
+            <li><a href="#raisonnement">Raisonnement</a></li>
+            <li><a href="#synthese">Synthèse</a></li>
+        </ul>
+    </nav>
+
+    <div class="main-wrapper">
+        <aside id="sidebar">
+            <h3 class="sidebar-title">Navigation</h3>
+            <nav class="sidebar-nav">
+                <a href="#analogie">🧠 Analogie systémique maître</a>
+                <a href="#modele-mental">🧩 Modèle mental global</a>
+                <a href="#architecture">1️⃣ Architecture conceptuelle</a>
+                <a href="#mecanismes">2️⃣ Mécanismes internes</a>
+                <a href="#protocoles">3️⃣ Protocoles, standards & outils</a>
+                <a href="#illusions">4️⃣ Illusions & pièges opérationnels</a>
+                <a href="#raisonnement">5️⃣ Raisonnement de l'expert senior</a>
+                <a href="#synthese">6️⃣ Synthèse mémorisable</a>
+                <a href="#extension">7️⃣ Extension au-delà du corpus</a>
+            </nav>
+        </aside>
+
+        <main id="content">
+            <section class="module-section" id="analogie">
+                <div class="section-header">
+                    <span class="section-tag">FONDATION</span>
+                    <h2>🧠 Analogie systémique maître — Le fortifié moderne</h2>
+                </div>
+                <p>Pour comprendre la sécurisation d’une infrastructure réseau, il faut la concevoir comme un <strong>système fortifié moderne</strong>, un ensemble de bâtiments (les sites) reliés par des voies publiques (Internet) et des voies privées sécurisées (WAN/VPN). Ce système n’est pas un simple mur, mais un <strong>écosystème vivant</strong> avec des règles, des gardes, des zones et des procédures.</p>
+                <ul>
+                    <li><strong>Le Système d’Information (SI)</strong> : C’est la cité elle-même, avec ses bâtiments administratifs (LAN, cœur de l’entreprise), ses zones de stockage de richesses (serveurs de données), ses zones industrielles (serveurs d’applications), et ses habitants (utilisateurs).</li>
+                    <li><strong>Le Pare-feu Périmétrique (externe)</strong> : C’est la <strong>porte principale de la ville</strong>. Elle ne laisse entrer que ceux qui ont une invitation (règle de filtrage) et contrôle les allées et venues. Un garde (stateful) se souvient des visages des personnes autorisées à sortir, ce qui permet de les laisser rentrer sans nouvelle inspection.</li>
+                    <li><strong>La Zone Démilitarisée (DMZ)</strong> : C’est le <strong>parvis devant la porte principale</strong>. C’est un espace public, exposé aux assaillants, mais ne donnant pas directement accès à la cité. On y place les services publics : la boutique (serveur Web), la permanence (serveur de messagerie). Si la boutique est vandalisée (compromise), la cité intérieure n’est pas touchée.</li>
+                    <li><strong>La DMZ Interne</strong> : C’est un <strong>hall d’entrée après la porte principale</strong>, mais avant les bureaux. On y place les services d’accueil intermédiaires (reverse proxy, proxy) qui contrôlent ce qui entre et sort.</li>
+                    <li><strong>Le Pare-feu Interne</strong> : C’est la <strong>porte de la cité intérieure</strong> (LAN). Elle ne s’ouvre que pour les personnes ayant des laissez-passer spécifiques (flux autorisés) et ne laisse jamais sortir les informations sans contrôle.</li>
+                    <li><strong>Le VPN Site-à-Site</strong> : C’est un <strong>tunnel secret et blindé</strong> construit entre deux cités (sites distants) à travers la campagne hostile (Internet). Il permet aux ressources des deux cités de communiquer comme si elles étaient dans la même enceinte.</li>
+                    <li><strong>Le VPN Nomade</strong> : C’est une <strong>armure et un bouclier magique</strong> qu’un employé revêt lorsqu’il sort de la cité pour travailler. Il crée un tunnel sécurisé entre son poste (où qu’il soit) et la cité, le rendant invisible aux dangers extérieurs.</li>
+                    <li><strong>L’Architecture Hiérarchique (Accès/Distribution/Cœur)</strong> : C’est l’organisation des rues et des quartiers de la cité.
+                        <ul><li><strong>Couche Accès</strong> : ruelles menant aux maisons (prises réseau). Le gardien (switch) vérifie que seul l’habitant y entre.</li>
+                        <li><strong>Couche Distribution</strong> : artères principales regroupant plusieurs ruelles. Les carrefours (routeurs) dirigent le trafic vers les bons quartiers.</li>
+                        <li><strong>Couche Cœur</strong> : grand boulevard central reliant tous les quartiers entre eux et aux portes de la cité.</li></ul>
+                    </li>
+                    <li><strong>La Redondance (HSRP/EtherChannel)</strong> : avoir <strong>deux portes principales ou deux ponts</strong> prenant le relais instantanément si l’un tombe en panne, assurant qu’aucun habitant ne soit bloqué.</li>
+                </ul>
+                <p>Cette analogie sert de fil rouge pour l’ensemble du module.</p>
+            </section>
+
+            <section class="module-section" id="modele-mental">
+                <div class="section-header">
+                    <span class="section-tag">SYSTÈME</span>
+                    <h2>🧩 Modèle mental global du système</h2>
+                </div>
+                <p>L’infrastructure sécurisée est un système dynamique où chaque composant interagit pour garantir la <strong>confidentialité, l’intégrité, la disponibilité</strong> et <strong>l’authentification</strong>.</p>
+                <div class="mermaid-diagram">
+                    <div class="mermaid">
+graph TD
+    subgraph UTILISATEUR
+        U[Poste Nomade / Interne]
+    end
+    subgraph INTERNET
+        I[Attaquant / Service Public]
+    end
+    subgraph PASSERELLE_SECURISEE
+        FW_Ext[Pare-feu Externe<br/>Filtrage IP Stateful]
+        DMZ_Ext[Zone de Services Exposes<br/>Proxy, Reverse Proxy, VPN GW]
+        FW_Mid[Pare-feu Median<br/>Filtrage Inter-DMZ]
+        DMZ_Int[Zone de Services Internes<br/>Serveurs Metier exposes<br/>Web, Mail, DNS]
+        FW_Int[Pare-feu Interne<br/>Filtrage Strict]
+    end
+    subgraph SI_INTERNE
+        LAN[Reseau Local LAN]
+        Serv_Int[Serveurs Internes<br/>AD, Base de Donnees]
+    end
+    U -- Connexion securisee VPN --> FW_Ext
+    I -- Requetes publiques --> FW_Ext
+    FW_Ext -- Flux controles --> DMZ_Ext
+    DMZ_Ext -- Rupture protocolaire --> FW_Mid
+    FW_Mid -- Flux autorises --> DMZ_Int
+    DMZ_Int -- Communication metier --> FW_Int
+    FW_Int -- Acces strict --> LAN
+    LAN -- Serveurs --> Serv_Int
+                    </div>
+                </div>
+                <p><strong>Flux du modèle :</strong><br/>
+                1. Utilisateur interne → Internet via proxy : authentification, filtrage, sortie via pare-feu externe.<br/>
+                2. Attaquant → serveur web : pare-feu externe autorise mais redirige vers reverse proxy en DMZ, non vers le serveur final.<br/>
+                3. Reverse proxy analyse la requête → transmet via pare-feu médian au serveur web en DMZ interne.<br/>
+                4. Le serveur web ne peut initier de connexion vers le LAN sans passer par le pare-feu interne qui ne l’autorise pas.<br/>
+                5. Les flux administrateurs et journaux sont collectés sur un réseau d’administration sécurisé et isolé.</p>
+            </section>
+
+            <section class="module-section" id="architecture">
+                <div class="section-header">
+                    <span class="section-tag">CONCEPT</span>
+                    <h2>1️⃣ Architecture conceptuelle fondamentale</h2>
+                </div>
+                <p><strong>Rôle métier/technique</strong> : L’infrastructure réseau sécurisée est le <strong>système immunitaire et circulatoire</strong> de l’entreprise. Elle assure la circulation légitime de l’information tout en bloquant, contenant et éliminant les éléments pathogènes (attaques, accès non autorisés).</p>
+                <div class="concept-key">
+                    <strong>Positionnement dans les modèles de référence</strong><br/>
+                    • <strong>Modèle OSI</strong> : sécurité appliquée à toutes les couches. Pare-feux aux couches 3,4,7. Routage et VLAN aux couches 2-3.<br/>
+                    • <strong>Défense en profondeur</strong> : segmentation en zones (LAN, DMZ, Internet), barrières successives.<br/>
+                    • <strong>ITIL / Gestion d’incident</strong> : processus organisés de dépannage, logs, tests méthodiques.
+                </div>
+                <p><strong>Frontières et interfaces</strong> : externe (pare-feu externe, routeur d’accès, VPN nomade), de zone (entre LAN et DMZ, entre DMZ et Internet), d’administration (réseau dédié isolé des flux de production).</p>
+                <p><strong>Principes philosophiques directeurs</strong> : moindre privilège, défense en profondeur, fail-secure (sécurité par l’échec), rupture protocolaire (proxy).</p>
+            </section>
+
+            <section class="module-section" id="mecanismes">
+                <div class="section-header">
+                    <span class="section-tag">MACHINERIE</span>
+                    <h2>2️⃣ Mécanismes internes détaillés — La machinerie</h2>
+                </div>
+                <h3>Mécanisme 1 : Filtrage Stateful vs Stateless</h3>
+                <p><strong>Stateless</strong> : chaque paquet examiné indépendamment. Règles sur IP/port/protocole. Ignore l’état de connexion.<br/>
+                <strong>Stateful</strong> : table d’état (connexion tracking). Seuls les paquets correspondant à une connexion valide sont autorisés, simplifiant les règles et augmentant la sécurité.</p>
+                <p><strong>Limites</strong> : ne protège pas contre les attaques applicatives (couche 7). Le <code>DROP</code> silencieux est préférable au <code>REJECT</code> pour les pare-feux externes.</p>
+                
+                <h3>Mécanisme 2 : Établissement d’un tunnel IPsec Site-à-Site (IKEv2)</h3>
+                <p><strong>Phase 1 (IKE SA)</strong> : négociation des paramètres du tunnel de contrôle (authentification, chiffrement, hash). Modes Main (6 messages) ou Aggressive (3 messages). Résultat : ISAKMP SA.<br/>
+                <strong>Phase 2 (IPsec SA)</strong> : négociation des paramètres de protection des données (ESP/AH, algorithmes, mode transport/tunnel). Utilise le tunnel de phase 1. Résultat : IPsec SA bidirectionnelle.</p>
+                <div class="mermaid-diagram">
+                    <div class="mermaid">
+sequenceDiagram
+    participant R1 as Routeur Site A
+    participant R2 as Routeur Site B
+    Note over R1,R2: Phase 1 : Negociation IKE SA
+    R1->>R2: 1. Proposition de parametres (encrypt, hash, auth, DH group)
+    R2-->>R1: 2. Parametres acceptes
+    R1->>R2: 3. Echange de cles Diffie-Hellman
+    R2-->>R1: 4. Echange de cles Diffie-Hellman
+    Note over R1,R2: Canal IKE securise etabli (ISAKMP SA)
+    R1->>R2: 5. Authentification (hash/ID) via PSK/certificat
+    R2-->>R1: 6. Authentification (hash/ID) via PSK/certificat
+    Note over R1,R2: Phase 2 : Negociation IPsec SA (via canal IKE securise)
+    R1->>R2: 7. Proposition pour trafic a proteger (reseau A vers reseau B)
+    R2-->>R1: 8. Parametres acceptes (ESP, AES, etc.)
+    Note over R1,R2: Tunnel IPsec (ESP) etabli. Le trafic est maintenant chiffre.
+                    </div>
+                </div>
+            </section>
+
+            <section class="module-section" id="protocoles">
+                <div class="section-header">
+                    <span class="section-tag">EXHAUSTIVITÉ</span>
+                    <h2>3️⃣ Protocoles, standards & outils — L’exhaustivité technique</h2>
+                </div>
+                <table>
+                    <thead><tr><th>Composant / Protocole</th><th>Objectif</th><th>Couche</th><th>Syntaxe / Sémantique critique</th><th>Erreurs classiques</th></tr></thead>
+                    <tbody>
+                        <tr><td>Pare-feu Stateful</td><td>Contrôle d’accès basé sur l’état</td><td>3,4</td><td><code>inspect http</code> vs <code>permit tcp any any eq 80</code></td><td>Confondre inspect et permit</td></tr>
+                        <tr><td>IPsec (ESP)</td><td>Confidentialité/intégrité IP</td><td>3</td><td><code>transform-set esp-aes esp-sha-hmac</code>, mode tunnel</td><td>Utiliser AH avec NAT</td></tr>
+                        <tr><td>LACP</td><td>Agrégation automatique de liens</td><td>2</td><td><code>channel-group 1 mode active</code></td><td><code>mode on</code> d’un côté, <code>active</code> de l’autre</td></tr>
+                        <tr><td>HSRPv2</td><td>Redondance passerelle</td><td>3 (FHRP)</td><td><code>standby 1 ip 10.0.0.1</code>, priorité, préemption</td><td>Oublier <code>standby version 2</code></td></tr>
+                        <tr><td>DNS</td><td>Résolution noms → IP</td><td>7</td><td>Enregistrements A, AAAA, TXT (SPF/DKIM)</td><td>Requêtes DNS directes contournant le proxy</td></tr>
+                        <tr><td>Wireshark</td><td>Capture et analyse paquets</td><td>N/A</td><td>Filtres <code>tcp.port==443</code> vs <code>host 10.0.0.1</code></td><td>Ne pas capturer en promiscuous si trafic inter-machine</td></tr>
+                        <tr><td>Photomètre / OTDR</td><td>Diagnostic fibre optique</td><td>Physique</td><td>Mesure puissance optique / réflectométrie</td><td>Se fier uniquement au voyant link sans mesurer l’atténuation</td></tr>
+                    </tbody>
+                </table>
+            </section>
+
+            <section class="module-section" id="illusions">
+                <div class="section-header">
+                    <span class="section-tag">SAGESSE NÉGATIVE</span>
+                    <h2>4️⃣ Illusions conceptuelles & pièges opérationnels</h2>
+                </div>
+                <div class="illusion-box"><strong>“Un VPN rend mon système invulnérable.”</strong><br/>Séduisante car le VPN est présenté comme une protection forte. Fausse car il ne protège ni contre les liens infectés, ni les malwares déjà présents, ni les attaques applicatives. Le VPN est un canal, pas un bouclier absolu.</div>
+                <div class="illusion-box"><strong>“Un seul pare-feu suffit, c’est mon mur.”</strong><br/>Séduisante par sa simplicité. Fausse car c’est un point unique de défaillance. La défense en profondeur impose une double barrière : externe → DMZ → interne.</div>
+                <div class="illusion-box"><strong>“Le mode Split-Tunneling est plus efficace.”</strong><br/>Séduisant pour les performances. Fausse car il expose le SI : un malware depuis la navigation personnelle peut infecter le réseau via le tunnel VPN actif.</div>
+                <div class="illusion-box"><strong>“J’ai un pare-feu, donc je peux ouvrir les ports de l’intérieur.”</strong><br/>Séduisant car la règle semble utile. Fausse car autoriser tout trafic sortant (<code>any any</code>) neutralise la protection. Principe : interdire puis autoriser explicitement.</div>
+            </section>
+
+            <section class="module-section" id="raisonnement">
+                <div class="section-header">
+                    <span class="section-tag">EXPERTISE</span>
+                    <h2>5️⃣ Raisonnement de l’expert senior — Pensée systémique appliquée</h2>
+                </div>
+                <p><strong>Pyramide de la causalité</strong><br/>
+                1. <strong>Couche physique</strong> : câbles, voyants, ONT (PON/LOS).<br/>
+                2. <strong>Connectivité de base</strong> : <code>ping</code> passerelle → configuration IP.<br/>
+                3. <strong>Chemin</strong> : <code>traceroute</code> pour localiser le saut de perte.<br/>
+                4. <strong>Journaux</strong> : <code>show log</code>, erreurs CRC/FEC/HEC, messages de blocage.<br/>
+                5. <strong>Capture applicative</strong> : Wireshark. <code>SYN → RST</code> = refus actif ; <code>SYN → rien</code> = <code>DROP</code> silencieux ; trafic proxy contourné = mauvaise configuration.</p>
+                <p><strong>Panne VPN Site-à-Site</strong><br/>
+                - <code>ping</code> IP publique du peer → WAN/ISP.<br/>
+                - <code>show crypto isakmp sa</code> : phase 1 OK ? (QM_IDLE) → sinon vérifier PSK, algorithmes, peer IP.<br/>
+                - <code>show crypto ipsec sa</code> : phase 2 ACTIVE ? → sinon vérifier <code>transform-set</code> et ACL crypto map (sous-réseaux).<br/>
+                - ACL : UDP 500 (IKE) et UDP 4500 (NAT-T) autorisés.</p>
+            </section>
+
+            <section class="module-section" id="synthese">
+                <div class="section-header">
+                    <span class="section-tag">CODE MENTAL</span>
+                    <h2>6️⃣ Synthèse mémorisable long terme — Le code mental</h2>
+                </div>
+                <div class="law-box"><strong>Lois invariantes</strong><br/>• Segmentation : “Un réseau non segmenté est un réseau non sécurisé. DMZ obligatoire pour tout service public.”<br/>• Redondance : “Tout point unique de défaillance est un risque de panne généralisée.”<br/>• Moindre privilège : “Une règle <code>permit ip any any</code> est une faute professionnelle.”</div>
+                <div class="equation-box"><strong>Équations mentales</strong><br/>Sécurité réseau = (Segmentation × Filtrage × Authentification) / Surface d’Attaque<br/>Disponibilité = (Redondance Physique + Redondance Protocolaire) – Point de Défaillance Unique</div>
+                <p><strong>Checklist avant config pare-feu</strong><br/>☐ Zones identifiées (LAN, DMZ, WAN) et niveaux de confiance<br/>☐ Matrice des flux (source, destination, port, protocole)<br/>☐ Politique “interdire puis autoriser”<br/>☐ Mode stateful adapté</p>
+                <p><strong>Checklist dépannage</strong><br/>1. Physique (câbles, voyants)<br/>2. IP/passerelle (<code>ipconfig</code>, <code>ping</code>)<br/>3. Chemin (<code>traceroute</code>)<br/>4. Journaux (logs)<br/>5. Capture Wireshark</p>
+                <div class="analogy-box"><strong>Retour à l’analogie</strong> : construire un fortifié moderne — double enceinte (pare-feux interne/externe), parvis exposé (DMZ), tunnels secrets (VPN), artères avec ponts de secours (HSRP/EtherChannel). La sécurité est une architecture, pas un outil.</div>
+                <pre>Carte heuristique concepts clés
+Securisation Infrastructure
+├── Architecture (Zones, Hierarchie, Redondance)
+├── Filtrage & Controle (Pare-feux, ACL, Interdire puis autoriser)
+├── Communications Securisees (VPN Nomade, VPN Site-a-Site)
+└── Operations & Maintenance (Surveillance, Depannage, Gestion)</pre>
+            </section>
+
+            <section class="module-section" id="extension">
+                <div class="section-header">
+                    <span class="section-tag">500%+</span>
+                    <h2>7️⃣ Extension au-delà du corpus — Les 500%+</h2>
+                </div>
+                <p><strong>Zero Trust</strong> : pousse la segmentation plus loin. “Ne jamais faire confiance, toujours vérifier.” Micro-segmentation, authentification chiffrée entre services. Les VPN et DMZ en sont des implémentations.<br/>
+                <strong>SD-WAN</strong> : évolution du VPN Site-à-Site. Gestion centralisée et dynamique de tunnels IPsec sur liens multiples (Internet, 4G, MPLS) selon politiques de performance et sécurité.</p>
+                <p><strong>Perspective vendor-neutral</strong><br/>
+                Cisco ASA : CLI robuste, stateful, présent en entreprise. Palo Alto : NGFW avec App-ID natif, modèle orienté règle. pfSense : open source, interface web, idéal PME.<br/>
+                HSRP (Cisco) vs VRRP (standard ouvert RFC 5798) : redondance multi-vendeurs avec VRRP.</p>
+                <p><strong>Liens vers autres disciplines</strong><br/>
+                • Développement : Infrastructure as Code (Ansible, APIs) pour politiques de sécurité.<br/>
+                • Droit & Conformité : RGPD, NIS2 imposent segmentation et journalisation.<br/>
+                • Économie : arbitrage entre MPLS (coûteux, simple) et IPsec sur Internet (économique, complexe).</p>
+            </section>
+        </main>
+    </div>
+
+    <script>
+        (function() {
+            const toggle = document.querySelector('.menu-toggle');
+            const navLinks = document.querySelector('.nav-links');
+            if (toggle && navLinks) {
+                toggle.addEventListener('click', () => {
+                    navLinks.classList.toggle('show');
+                });
+            }
+            const sections = document.querySelectorAll('.module-section');
+            const sidebarLinks = document.querySelectorAll('.sidebar-nav a, .nav-links a');
+            function setActiveSection() {
+                let current = '';
+                sections.forEach(section => {
+                    const sectionTop = section.offsetTop;
+                    const sectionBottom = sectionTop + section.offsetHeight;
+                    if (window.scrollY + 150 >= sectionTop && window.scrollY + 150 < sectionBottom) {
+                        current = section.getAttribute('id');
+                    }
+                });
+                sidebarLinks.forEach(link => {
+                    link.classList.remove('active');
+                    const href = link.getAttribute('href');
+                    if (href && href === '#' + current) {
+                        link.classList.add('active');
+                    }
+                });
+            }
+            window.addEventListener('scroll', setActiveSection);
+            window.addEventListener('resize', setActiveSection);
+            setActiveSection();
+            if (typeof mermaid !== 'undefined') {
+                mermaid.initialize({ startOnLoad: true, theme: 'base', securityLevel: 'loose', fontFamily: 'Source Sans 3' });
+            }
+        })();
+    </script>
+</body>
+</html>
